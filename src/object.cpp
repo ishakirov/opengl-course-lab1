@@ -65,7 +65,7 @@ bool parseObj(
   }
 
   // workaround (since we withoutn texture coords)
-  temp_uvs.push_back(glm::vec2(0.0, 0.0));
+  // temp_uvs.push_back(glm::vec2(0.0, 0.0));
 
   for(int i = 0; i < vertexIndices.size(); i++) {
 		unsigned int vertexIndex = vertexIndices[i];

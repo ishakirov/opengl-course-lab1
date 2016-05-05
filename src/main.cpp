@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 	GLuint ViewMatrixID = glGetUniformLocation(programID, "V");
 	GLuint ModelMatrixID = glGetUniformLocation(programID, "M");
+	GLuint NormalMatrixID = glGetUniformLocation(programID, "normalMatrix");
 	GLuint vertexPosition_modelspaceID = glGetAttribLocation(programID, "vertexPosition_modelspace");
 	GLuint vertexUVID = glGetAttribLocation(programID, "vertexUV");
 	GLuint vertexNormal_modelspaceID = glGetAttribLocation(programID, "vertexNormal_modelspace");
@@ -107,9 +108,14 @@ int main(int argc, char* argv[])
 		glm::mat4 Model      = glm::mat4(1.0f);
 		glm::mat4 MVP        = Projection * View * Model;
 
+		glm::mat3 normalMatrix(View * Model);
+		normalMatrix = glm::inverse(View * Model);
+		normalMatrix = glm::transpose(normalMatrix);
+
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &Model[0][0]);
 		glUniformMatrix4fv(ViewMatrixID, 1, GL_FALSE, &View[0][0]);
+		glUniformMatrix3fv(NormalMatrixID, 1, GL_FALSE, &normalMatrix[0][0]);
 
 		glm::vec3 lightPos = glm::vec3(4,4,4);
 		glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
